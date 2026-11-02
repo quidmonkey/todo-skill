@@ -1,4 +1,4 @@
-# /todo
+# todo-skill
 
 A Claude Code skill that answers, "What do I still need to do?" or, "Who do I owe something?"
 
