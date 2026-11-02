@@ -1,0 +1,46 @@
+# ~/.todorc: config for the /todo skill. "#" starts a comment.
+# Done/snoozed/dismissed items live in ~/.todo-state.json (managed by the skill).
+
+# Who you are, so action items in meeting notes can be matched to you.
+[me]
+name = Your Name
+aliases = First, Nickname, initials          # how people refer to you in notes
+emails = you@example.com                     # also used to find your git commits
+github =                                     # blank = use the `gh` login
+
+[settings]
+lookback_hours = 72      # Claude sessions, meeting notes, new TODOs
+scan_depth = 5           # how deep to look for git repos under scan roots
+stale_days = 14          # skip scanned repos untouched for this long
+
+# Turn sources off with "off".
+[sources]
+claude = on
+jira = on
+asana = on
+linear = on
+monday = on
+gmail = on
+drive = on
+git = on
+github = on
+
+# Repos to always check, one per line. "scan <dir>" finds repos under a directory
+# (default: scan ~/Development). Repos from recent Claude sessions are always included.
+[repos]
+scan ~/Development
+
+[jira]
+# site = yourcompany.atlassian.net
+# jql = assignee = currentUser() AND statusCategory != Done ORDER BY duedate ASC
+
+[gmail]
+# {days} is replaced with the lookback window in days. The default sender addresses
+# are a best guess: check what your meeting-notes emails actually come from.
+# query = newer_than:{days}d (from:gemini-notes@google.com OR subject:"meeting notes")
+
+[drive]
+# query = Notes by Gemini
+
+[github]
+# orgs = your-org        # limit PR/issue searches to these orgs (comma-separated)
