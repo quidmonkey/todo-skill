@@ -9,7 +9,7 @@ allowed-tools: Bash(python3 ${CLAUDE_SKILL_DIR}/scripts/todo.py:*)
 
 Collect outstanding items from every available source, drop ones the user already closed, and show a short list.
 
-Script: `python3 "${CLAUDE_SKILL_DIR}/scripts/todo.py"`. Config is `~/.todorc` (template: `${CLAUDE_SKILL_DIR}/todorc.example`). State is `~/.todo-state.json`. Only the script writes the state file.
+Script: `python3 "${CLAUDE_SKILL_DIR}/scripts/todo.py"`. Config is `~/.claude/todo/todorc` (template: `${CLAUDE_SKILL_DIR}/todorc.example`). State is `~/.claude/todo/state.json`. Always use the `rc_path` and `state_path` the script reports; they honor the `TODORC` and `TODO_STATE` overrides. Only the script writes the state file.
 
 ## 1. Handle subcommands first
 
@@ -28,7 +28,7 @@ Otherwise the argument is an optional window: `Nh`, or `since <day/date>` conver
 
 Run `todo.py config`. It returns JSON with the user's identity, enabled sources, queries and repo settings.
 
-If `rc_found` is false, copy `todorc.example` to `~/.todorc` and fill `[me]` from the config JSON. Tell the user in one line that you created it and that they can add aliases and repos there. Then continue with the defaults; don't stop to ask.
+If `rc_found` is false, copy `todorc.example` to `rc_path` (create the parent directory if needed) and fill `[me]` from the config JSON. Tell the user in one line that you created it and that they can add aliases and repos there. Then continue with the defaults; don't stop to ask.
 
 Use `me.name`, `me.aliases` and `me.emails` to tell which meeting-note action items belong to the user. "Abe to send…", "@Abraham", "AW will…" and "you" in a 1:1 all count.
 

@@ -2,10 +2,10 @@
 """Local collectors and state for the /todo skill.
 
 Subcommands:
-  config                 print the merged ~/.todorc config as JSON
+  config                 print the merged ~/.claude/todo/todorc config as JSON
   sessions [--hours N]   digest of recent Claude Code sessions, focused on unfinished work
   git [--hours N]        outstanding git work: dirty trees, unpushed branches, new TODOs, PRs
-  state ...              read/update ~/.todo-state.json (done, dismiss, snooze, add, last)
+  state ...              read/update ~/.claude/todo/state.json (done, dismiss, snooze, add, last)
 """
 
 import argparse
@@ -21,8 +21,20 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 HOME = Path.home()
-RC_PATH = Path(os.environ.get("TODORC", HOME / ".todorc"))
-STATE_PATH = Path(os.environ.get("TODO_STATE", HOME / ".todo-state.json"))
+TODO_DIR = HOME / ".claude" / "todo"
+RC_PATH = Path(os.environ.get("TODORC", TODO_DIR / "todorc"))
+STATE_PATH = Path(os.environ.get("TODO_STATE", TODO_DIR / "state.json"))
+LEGACY_PATHS = [  # pre-~/.claude locations, migrated on first run
+    ("TODORC", HOME / ".todorc", RC_PATH),
+    ("TODO_STATE", HOME / ".todo-state.json", STATE_PATH),
+]
+
+
+def migrate_legacy():
+    for env, old, new in LEGACY_PATHS:
+        if env not in os.environ and old.exists() and not new.exists():
+            new.parent.mkdir(parents=True, exist_ok=True)
+            old.replace(new)
 PROJECTS_DIR = HOME / ".claude" / "projects"
 
 SOURCES = ["claude", "jira", "asana", "linear", "monday", "gmail", "drive", "git", "github"]
@@ -442,6 +454,7 @@ def save_state(state):
         k: v for k, v in state["items"].items()
         if v["status"] in {"open", "snoozed"} or v.get("updated", "9999") >= cutoff
     }
+    STATE_PATH.parent.mkdir(parents=True, exist_ok=True)
     tmp = STATE_PATH.with_suffix(".tmp")
     tmp.write_text(json.dumps(state, indent=2, sort_keys=True))
     tmp.replace(STATE_PATH)
@@ -533,6 +546,7 @@ def main():
     st.add_argument("--due")
     args = p.parse_args()
 
+    migrate_legacy()
     cfg = load_config()
     if args.cmd == "config":
         print(json.dumps(cfg, indent=2))

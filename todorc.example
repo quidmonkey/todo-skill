@@ -1,5 +1,5 @@
-# ~/.todorc: config for the /todo skill. "#" starts a comment.
-# Done/snoozed/dismissed items live in ~/.todo-state.json (managed by the skill).
+# ~/.claude/todo/todorc: config for the /todo skill. "#" starts a comment.
+# Done/snoozed/dismissed items live in ~/.claude/todo/state.json (managed by the skill).
 
 # Who you are, so action items in meeting notes can be matched to you.
 [me]

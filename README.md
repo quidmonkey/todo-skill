@@ -37,14 +37,14 @@ The numbers refer to the most recent list.
 
 ## Config
 
-The first time you run `/todo`, it creates `~/.todorc` from [`todorc.example`](todorc.example). Edit that file to:
+The first time you run `/todo`, it creates `~/.claude/todo/todorc` from [`todorc.example`](todorc.example). Edit that file to:
 
 - add the nicknames and initials people use for you in meeting notes
 - turn sources on or off
 - choose which repos to check (by default it scans `~/Development`)
 - change the Jira JQL, the Gmail search, or the GitHub orgs
 
-Items you mark done, dismiss or snooze are stored in `~/.todo-state.json`. To use different paths, set `TODORC` and `TODO_STATE`.
+Items you mark done, dismiss or snooze are stored in `~/.claude/todo/state.json`. To use different paths, set `TODORC` and `TODO_STATE`. If you used an earlier version, `~/.todorc` and `~/.todo-state.json` are moved there automatically.
 
 ## Files
 
